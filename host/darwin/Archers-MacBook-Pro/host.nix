@@ -6,6 +6,6 @@ getModule:
   modules = [
     # (getModule /test.nix)
   ];
-  # home-modules = [ ];
+  # homeModules = [ ];
   # specialArgs = {};
 }

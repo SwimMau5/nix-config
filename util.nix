@@ -20,7 +20,7 @@ rec {
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${config.username} = {
-                imports = (config.home-modules or [ ]) ++ [
+                imports = (config.homeModules or [ ]) ++ [
                   ({ ... }: {
                     home = {
                       username = config.username;
@@ -37,7 +37,7 @@ rec {
         ];
         specialArgs = { inherit inputs; } // (config.specialArgs or { });
       }
-    else null;
+    else { };
   mkDarwinHost =
     host:
     fileType:
@@ -57,7 +57,7 @@ rec {
               useGlobalPkgs = true;
               useUserPackages = true;
               users.${config.username} = {
-                imports = (config.home-modules or [ ]) ++ [
+                imports = (config.homeModules or [ ]) ++ [
                   ({ lib, ... }: {
                     home = {
                       username = config.username;
@@ -74,5 +74,5 @@ rec {
         ];
         specialArgs = { inherit inputs; } // (config.specialArgs or { });
       }
-    else null;
+    else { };
 }
