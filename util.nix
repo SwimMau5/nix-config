@@ -1,89 +1,51 @@
 inputs:
 rec {
   getModule = mod: ./mod + mod;
-  mkNixOSUser =
-    host:
-    user: config:
-    {
-      imports = (config.homeModules or [ ]) ++ [
-        ({ ... }: {
-          home = {
-            username = user;
-            homeDirectory = config.homeDirectory;
-          };
-        })
-        ./host/nixos/${host}/home.nix
-        ./mod/home-manager
-      ];
+  systemTypes = {
+    nixos = {
+      system = inputs.nixpkgs.lib.nixosSystem;
+      home-manager = inputs.home-manager.nixosModules.home-manager;
     };
-  mkNixOSHost =
-    host:
-    fileType:
+    darwin = {
+      system = inputs.darwin.lib.darwinSystem;
+      home-manager = inputs.home-manager.darwinModules.home-manager;
+    };
+  };
+  mkHost =
+    type:
+    host: fileType:
     if fileType == "directory" then
       let
-        module = import ./host/nixos/${host};
+        module = import ./host/${type}/${host};
         config = if builtins.isFunction module then
-            module { inherit inputs; inherit getModule; }
+            module { inherit inputs getModule; }
           else module;
-      in inputs.nixpkgs.lib.nixosSystem {
-        system = config.system;
-        modules = (config.modules or [ ]) ++ [
-          ({ ... }: {
-            networking.hostName = host;
-          })
-          ./mod
-          ./host/nixos/${host}/configuration.nix
-          inputs.home-manager.nixosModules.home-manager
+        mkUser =
+          user: userConfig:
           {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users = builtins.mapAttrs (mkNixOSUser host) config.users;
-              backupFileExtension = "hm-bkup";
-            };
-          }
-        ];
-        specialArgs = { inherit inputs; } // (config.specialArgs or { });
-      }
-    else { };
-  mkDarwinUser =
-    host:
-    user: config:
-    {
-      imports = (config.homeModules or [ ]) ++ [
-        ({ lib, ... }: {
-          home = {
-            username = user;
-            homeDirectory = lib.mkForce config.homeDirectory;
+            imports = (userConfig.homeModules or [ ]) ++ [
+              ({ lib, ... }: {
+                home = {
+                  username = user;
+                  homeDirectory = lib.mkForce userConfig.homeDirectory;
+                };
+              })
+              ./host/${type}/${host}/home.nix
+              ./mod/home-manager
+            ];
           };
-        })
-        ./host/darwin/${host}/home.nix
-        ./mod/home-manager
-      ];
-    };
-  mkDarwinHost =
-    host:
-    fileType:
-    if fileType == "directory" then
-    let
-      module = import ./host/darwin/${host};
-      config = if builtins.isFunction module then
-          module { inherit inputs; inherit getModule; }
-        else module;
-      in inputs.darwin.lib.darwinSystem {
+      in systemTypes.${type}.system {
         system = config.system;
         modules = (config.modules or [ ]) ++ [
-          ({ ... }: {
-            networking.hostName = host;
-          })
           ./mod
-          ./host/darwin/${host}/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
+          ./host/${type}/${host}/configuration.nix
+          systemTypes.${type}.home-manager
           {
+            networking.hostName = host;
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users = builtins.mapAttrs (mkDarwinUser host) config.users;
+              users = builtins.mapAttrs mkUser config.users;
               backupFileExtension = "hm-bkup";
             };
           }

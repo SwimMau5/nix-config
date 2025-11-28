@@ -14,7 +14,7 @@
   };
 
   outputs = { ... }@inputs: with import ./util.nix inputs; {
-    nixConfigurations = builtins.mapAttrs mkNixOSHost (builtins.readDir ./host/nixos);
-    darwinConfigurations = builtins.mapAttrs mkDarwinHost (builtins.readDir ./host/darwin);
+    nixConfigurations = builtins.mapAttrs (mkHost "nixos") (builtins.readDir ./host/nixos);
+    darwinConfigurations = builtins.mapAttrs (mkHost "darwin") (builtins.readDir ./host/darwin);
   };
 }
