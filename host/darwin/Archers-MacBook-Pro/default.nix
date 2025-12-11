@@ -3,6 +3,7 @@
   system = "aarch64-darwin";
   modules = [
     # (getModule /test.nix)
+    (getModule /pixieditor.nix)
   ];
   # specialArgs = {};
   users.amatthias = {

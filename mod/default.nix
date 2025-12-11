@@ -3,6 +3,7 @@
   config = {
     environment.systemPackages = with pkgs; [
       kitty
+      cargo
     ];
     fonts.packages = [
       pkgs.nerd-fonts.geist-mono
