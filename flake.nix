@@ -26,6 +26,7 @@
           home-manager = inputs.home-manager.darwinModules.home-manager;
         };
       };
+      optionalPath = path: inputs.nixpkgs.lib.optional (builtins.pathExists path) path;
       mkHost =
         type:
         host: fileType:
@@ -64,7 +65,8 @@
                   backupFileExtension = "hm-bkup";
                 };
               }
-            ];
+            ]
+            ++ (optionalPath ./host/${type}/${host}/hardware-configuration.nix);
             specialArgs = { inherit inputs; } // (config.specialArgs or { });
           }
         else { };
