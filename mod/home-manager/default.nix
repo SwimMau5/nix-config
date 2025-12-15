@@ -4,7 +4,19 @@
     nix-tree
   ];
 
+  home.sessionVariables.SHELL = "${pkgs.zsh}/bin/zsh";
+
   programs = {
+    git = {
+      enable = true;
+      settings = {
+        user = {
+          name = "HyloArch";
+          email = "92276260+HyloArch@users.noreply.github.com";
+        };
+        safe.directory = "/etc/nixos";
+      };
+    };
     zsh = {
       enable = true;
       enableCompletion = true;
@@ -29,6 +41,10 @@
         size = 16;
       };
       themeFile = "OneDark-Pro";
+      shellIntegration.enableZshIntegration = true;
+      settings = {
+        shell = "${pkgs.zsh}/bin/zsh";
+      };
     };
     btop.enable = true;
     home-manager.enable = true;

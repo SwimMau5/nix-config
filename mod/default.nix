@@ -9,6 +9,15 @@
       pkgs.nerd-fonts.geist-mono
     ];
 
+    networking.networkmanager.enable = true;
+
+    time.timeZone = "America/Chicago";
+
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+    };
+
     nixpkgs.config.allowUnfree = true;
 
     nix = {

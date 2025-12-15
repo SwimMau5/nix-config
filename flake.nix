@@ -2,7 +2,7 @@
   description = "User home-manager flake";
 
   inputs = {
-    nixpkgs.url = "github:swimmau5/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:hyloarch/nixpkgs/nixos-25.11";
     darwin = {
       url = "github:lnl7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,7 +71,7 @@
           }
         else { };
     in {
-      nixConfigurations = builtins.mapAttrs (mkHost "nixos") (builtins.readDir ./host/nixos);
+      nixosConfigurations = builtins.mapAttrs (mkHost "nixos") (builtins.readDir ./host/nixos);
       darwinConfigurations = builtins.mapAttrs (mkHost "darwin") (builtins.readDir ./host/darwin);
     };
 }

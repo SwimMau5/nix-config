@@ -44,15 +44,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1765489374,
-        "narHash": "sha256-NFAHGEoFAUnUMrZF4VsNA+0lB0lu/hJLX7qA+7mOjYo=",
-        "owner": "swimmau5",
+        "lastModified": 1765490126,
+        "narHash": "sha256-a2tY6ZShC4NcYc+lb9m060oh9SU7hTvyw2zjjqcyENQ=",
+        "owner": "hyloarch",
         "repo": "nixpkgs",
-        "rev": "c4aa030bbb08acbb94bb020bf2cd8a41eb7bb9a9",
+        "rev": "4b4c50aac52ba95e2d7f62f57d3b4aba26150160",
         "type": "github"
       },
       "original": {
-        "owner": "swimmau5",
+        "owner": "hyloarch",
         "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
