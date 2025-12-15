@@ -11,8 +11,12 @@
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
       shellAliases = {
+
+      } // (if pkgs.stdenv.hostPlatform.isDarwin then {
         snrds = "sudo nix run nix-darwin -- switch --flake ~/dotfiles";
-      };
+      } else {
+        snrbs = "sudo nixos-rebuild switch";
+      });
       oh-my-zsh = {
         enable = true;
         theme = "agnoster";

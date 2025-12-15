@@ -21,7 +21,7 @@
       gc = {
         automatic = true;
         options = "--delete-older-than 30d";
-      } // (if pkgs.stdenv.isDarwin then {
+      } // (if pkgs.stdenv.hostPlatform.isDarwin then {
         interval = {
           Hour = 4;
           Minute = 0;
