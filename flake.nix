@@ -26,7 +26,8 @@
           home-manager = inputs.home-manager.darwinModules.home-manager;
         };
       };
-      optionalPath = path: inputs.nixpkgs.lib.optional (builtins.pathExists path) path;
+      optional = inputs.nixpkgs.lib.optional;
+      optionalPath = path: optional (builtins.pathExists path) path;
       mkHost =
         type:
         host: fileType:
@@ -66,6 +67,7 @@
                 };
               }
             ]
+            ++ (optionalPath (getModule /${type}.nix))
             ++ (optionalPath ./host/${type}/${host}/hardware-configuration.nix);
             specialArgs = { inherit inputs; } // (config.specialArgs or { });
           }
